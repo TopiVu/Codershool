@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Number Guess</title>
+    <style>
+        body {
+                background-color: lightblue;
+                font-family: "Times New Roman", Times, serif;
+                font-size: 20px;
+            }
+        .Container{
+            margin: auto;
+            width: 50%;
+            border: 3px solid green;
+            padding: 10px;
+        }
+        .content{
+            margin: auto;
+            width: 50%;
+            border: 1px solid green;
+            padding: 10px;
+        }
+        #again{
+            margin: auto;
+            width: 50%;
+        }
+        #btn_agian{
+            background-color: orange;
+            width: 100%;
+            margin-top:40px; 
+        }
+    </style>
+</head>
+<body onload="disable()">
+    <div class="Container">
+        <h2 style="text-align: center">Number Guessing Game</h2>
+        <p style="text-align: center; margin-top:-20px ">(0 to 99)</p>
+        <div class="content">
+            <div id="message"></div>
+            <input style="width: 80%;" type="number" id="number" required>
+            <button  id="guessButton">Guess</button>
+            <div id="result"></div>
+            <div id="again"><button onclick="play_again()" id="btn_agian">Play again</button></div>
+        </div>
+        <div>
+            <b>User is past guesses:</b><b id="userGuess"></b>
+        </div>
+    </div>
+   
+
+    <script>
+        let buttonguess = document.getElementById('guessButton')
+        let ramdom = Math.floor(Math.random() * 100)
+        let result = document.getElementById('result')
+        console.log(ramdom)
+        let message = document.getElementById('message')
+        let  guesses = 10
+        buttonguess.addEventListener('click',()=>{
+            if (guesses==0)
+            {
+                message.innerHTML="You lose !!!"
+                result.innerHTML = "Result: "+ ramdom
+                buttonguess.disabled = true
+                return 0
+            }
+           
+            let number = document.getElementById('number').value
+            if (number>99 || number<0 || number=='')
+            {
+                message.innerHTML="Please enter number 0 to 99 !!!"
+                message.style.backgroundColor="yellow"
+                return 0
+            }
+            guesses = guesses-1
+            document.getElementById('again').style.display="block"
+            if (number<ramdom)
+            {
+                message.innerHTML="Sorry your guess is too low ! You have "+guesses+" guesses left"
+                message.style.backgroundColor="red"
+                addGuess(number)
+            }
+            else if (number>ramdom)
+            {
+                message.innerHTML="Sorry your guess is too high ! You have "+guesses+" guesses left"
+                message.style.backgroundColor="red"
+                addGuess(number)
+            }
+            else{
+                message.innerHTML= "Congratulations! You guessed correctly."
+                message.style.backgroundColor="green"
+                buttonguess.disabled = true
+            }
+        })
+        var addGuess=(val)=>{
+            let userGuess = document.getElementById('userGuess')
+            let valold = document.getElementById('userGuess').innerText
+            console.log(valold)
+            userGuess.innerHTML= val +', '+ valold
+        }
+        var disable=()=>{
+            document.getElementById('again').style.display = "none";
+        }
+        var play_again=()=>{
+            location.reload();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Currency Converter</title>
+    <style>
+            body {
+                    background-color: lightblue;
+                    font-family: "Times New Roman", Times, serif;
+                    font-size: 20px;
+                }
+            .Container{
+                margin: auto;
+                width: 50%;
+                border: 3px solid green;
+                padding: 10px;
+            }
+            .content{
+                margin: auto;
+                width: 50%;
+                border: 1px solid green;
+                padding: 10px;
+            }
+           
+        </style>
+</head>
+<body>
+        <div class="Container">
+            <h2 style="text-align: center">Currency Converter</h2>
+            <div class="content">
+                    <input type="radio" checked name ="1" value="usd"> USD <br>
+                    <input type="radio" name ="1" value ="eur"> EUR
+                    <br>
+                    <input id="val" type="number">
+                    <button onclick="convertToVnd()">
+                        Convert Currency
+                    </button>
+            </div>
+            <div>
+                <b>Result:  </b><b id="result"></b>
+            </div>
+        </div>
+   
+      <script>
+          var convertToVnd = ()=> {
+            let checkbox = document.getElementsByName('1')
+            let check 
+            let conversion 
+            for (var i = 0; i < checkbox.length; i++){
+                            if (checkbox[i].checked === true){
+                                check = checkbox[i].value
+                            }
+                        }
+            if ( check =="usd")
+                    callApi('USD')
+            else 
+                    callApi('EUR')
+        
+        }
+        function callApi(a) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://free.currconv.com/api/v7/convert?q='+a+'_VND&compact=ultra&apiKey=a8a1ed3ef0467ff80fde');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                updateResults(JSON.parse(xhr.responseText));
+            }
+            else {
+                alert('Request failed.  Returned status of ' + xhr.status);
+            }
+        };
+        xhr.send();
+        }
+
+        var updateResults= (response)=> {
+        console.log(response.USD_VND);
+        let checkbox = document.getElementsByName('1')
+            let check 
+            let conversion 
+            for (var i = 0; i < checkbox.length; i++){
+                            if (checkbox[i].checked === true){
+                                check = checkbox[i].value
+                            }
+                        }
+            if ( check =="usd")
+                    conversion = response.USD_VND
+            else 
+                    conversion = response.EUR_VND
+        
+        let val = document.getElementById('val').value
+            let vndAmount = conversion * val
+            var key = check.toUpperCase()
+            document.getElementById('result').innerHTML =val +" "+ key +' to ' +vndAmount +' VND'
+        }
+
+      </script>
+</body>
+</html>
